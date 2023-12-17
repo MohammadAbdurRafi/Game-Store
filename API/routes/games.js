@@ -1,9 +1,35 @@
 const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 const db = require('../config/database');
 const Game = require('../models/Game');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './pictures');
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${file.fieldname}-${Date.now()}${getExtension(file.mimetype)}`);
+  },
+});
+
+const getExtension = (mimetype) => {
+  switch (mimetype) {
+    case 'image/png':
+      return '.png';
+    case 'image/jpeg':
+      return '.jpeg';
+    case 'image/jpg':
+      return '.jpg';
+  }
+};
+
+const app = express();
+const multerMiddleware = multer({ storage: storage });
+
+app.use('/pictures', express.static('pictures'));
 
 // Get all the games
 router.get('/', async (req, res) => {
@@ -29,7 +55,7 @@ router.get('/:game_id', async (req, res) => {
 });
 
 // Add a game
-router.post('/add', async (req, res) => {
+router.post('/add', multerMiddleware.single('picture'), async (req, res) => {
   const { name, description, picture, price, isActive, quantity } = req.body;
   let errors = [];
 
@@ -75,27 +101,32 @@ router.post('/add', async (req, res) => {
 });
 
 // Update a game
-router.put('/:game_id', async (req, res) => {
-  try {
-    const game_id = req.params.game_id;
-    const game = await Game.findOne({ where: { id: `${game_id}` } });
+router.put(
+  '/:game_id',
+  multerMiddleware.single('picture'),
+  async (req, res) => {
+    try {
+      const game_id = req.params.game_id;
+      const game = await Game.findOne({ where: { id: `${game_id}` } });
 
-    const { name, description, picture, price, isActive, quantity } = req.body;
+      const { name, description, picture, price, isActive, quantity } =
+        req.body;
 
-    game.name = name;
-    game.description = description;
-    game.picture = picture;
-    game.price = price;
-    game.isActive = isActive;
-    game.quantity = quantity;
+      game.name = name;
+      game.description = description;
+      game.picture = picture;
+      game.price = price;
+      game.isActive = isActive;
+      game.quantity = quantity;
 
-    await game.save();
-    res.json({ message: 'Game updated successfully', game });
-  } catch (error) {
-    console.log(error);
-    res.json({ message: 'Error updating game', error });
+      await game.save();
+      res.json({ message: 'Game updated successfully', game });
+    } catch (error) {
+      console.log(error);
+      res.json({ message: 'Error updating game', error });
+    }
   }
-});
+);
 
 router.delete('/:game_id', async (req, res) => {
   try {
