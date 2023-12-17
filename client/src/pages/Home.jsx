@@ -23,12 +23,15 @@ const Home = () => {
   };
   return (
     <>
-      <Row gutter={16}>
+      <Row gutter={16} style={{ marginLeft: '40px', marginRight: '40px' }}>
         {games.map((game) => (
-          <Col key={game.id} span={8}>
-            <Card style={{ textAlign: 'center' }} hoverable title={game.name}>
-              <Image src={game.picture} />
-              <Meta description={game.description} />
+          <Col key={game.id} span={4}>
+            <Card
+              style={{ textAlign: 'center' }}
+              hoverable
+              cover={<Image src={game.picture} />}
+            >
+              <Meta description={game.description} title={game.name} />
               <p>${game.price}</p>
               <p>
                 {game.isActive

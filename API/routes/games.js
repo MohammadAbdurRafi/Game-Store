@@ -56,7 +56,8 @@ router.get('/:game_id', async (req, res) => {
 
 // Add a game
 router.post('/add', multerMiddleware.single('picture'), async (req, res) => {
-  const { name, description, picture, price, isActive, quantity } = req.body;
+  const { name, description, price, isActive, quantity } = req.body;
+  const picture = req.file.path.replace('\\', '/');
   let errors = [];
 
   //   Validate Fields
