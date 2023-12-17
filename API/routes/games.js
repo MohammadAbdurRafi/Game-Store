@@ -26,10 +26,7 @@ const getExtension = (mimetype) => {
   }
 };
 
-const app = express();
 const multerMiddleware = multer({ storage: storage });
-
-app.use('/pictures', express.static('pictures'));
 
 // Get all the games
 router.get('/', async (req, res) => {

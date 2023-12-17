@@ -1,12 +1,18 @@
-import { Menu, Layout } from 'antd';
-import { HomeOutlined, PlusOutlined } from '@ant-design/icons';
+import { Menu, Layout, Dropdown, Space } from 'antd';
+import {
+  HomeOutlined,
+  PlusOutlined,
+  UserOutlined,
+  CodeOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons';
 const { Header } = Layout;
 import { Link, Routes, Route } from 'react-router-dom';
 import AddGame from '../../pages/AddGame';
 import Home from '../../pages/Home';
 import './Navbar.css';
 
-/* const dropdownItems = [
+const dropdownItems = [
   {
     key: 'projects',
     label: (
@@ -46,7 +52,7 @@ import './Navbar.css';
     ),
     icon: <LogoutOutlined />,
   },
-]; */
+];
 
 const menuItems = [
   {
@@ -60,21 +66,16 @@ const menuItems = [
     icon: <PlusOutlined />,
   },
   {
-    /* {
     label: (
       <Dropdown menu={{ dropdownItems }}>
-        <>
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              <UserOutlined />
-            </Space>
-          </a>
-        </>
+        <a onClick={(e) => e.preventDefault()}>
+          <Space>
+            <UserOutlined />
+          </Space>
+        </a>
       </Dropdown>
     ),
     key: 'dropdown',
-  },
-*/
   },
 ];
 

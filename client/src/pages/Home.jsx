@@ -8,9 +8,22 @@ const Home = () => {
 
   useEffect(() => {
     const getGames = async () => {
-      const gamesFromServer = await fetchGames();
-      setGames(gamesFromServer);
-      console.log(games);
+      let gamesFromServer = await fetchGames();
+      console.log(gamesFromServer);
+      setGames(
+        gamesFromServer.map((g) => ({
+          id: g.id,
+          name: g.name,
+          description:
+            g.description.length > 10
+              ? g.description.substring(0, 10)
+              : g.description,
+          picture: g.picture,
+          price: g.price,
+          isActive: g.isActive,
+          quantity: g.quantity,
+        }))
+      );
     };
 
     getGames();
@@ -29,7 +42,12 @@ const Home = () => {
             <Card
               style={{ textAlign: 'center' }}
               hoverable
-              cover={<Image src={game.picture} />}
+              cover={
+                <Image
+                  height="250px"
+                  src={`${import.meta.env.VITE_API_BASE_URL}${game.picture}`}
+                />
+              }
             >
               <Meta description={game.description} title={game.name} />
               <p>${game.price}</p>
