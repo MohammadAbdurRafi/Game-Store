@@ -65,18 +65,18 @@ const menuItems = [
     key: 'add_game',
     icon: <PlusOutlined />,
   },
-  {
-    label: (
-      <Dropdown menu={{ dropdownItems }}>
-        <a onClick={(e) => e.preventDefault()}>
-          <Space>
-            <UserOutlined />
-          </Space>
-        </a>
-      </Dropdown>
-    ),
-    key: 'dropdown',
-  },
+  // {
+  //   label: (
+  //     <Dropdown menu={{ dropdownItems }}>
+  //       <a onClick={(e) => e.preventDefault()}>
+  //         <Space>
+  //           <UserOutlined />
+  //         </Space>
+  //       </a>
+  //     </Dropdown>
+  //   ),
+  //   key: 'dropdown',
+  // },
 ];
 
 const Navbar = () => {
@@ -86,6 +86,7 @@ const Navbar = () => {
         <Header className="header">
           <div>
             <Menu
+              style={{ justifyContent: 'flex-start' }}
               theme="dark"
               mode="horizontal"
               defaultSelectedKeys={['1']}
