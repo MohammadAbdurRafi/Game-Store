@@ -1,80 +1,193 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Form, Input, Button, Select } from 'antd';
+const { TextArea } = Input;
 
 const AddGame = () => {
-  const URL = 'http://localhost:8000/api/games/';
-
+  const fileRef = useRef(null);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formInputs, setFormInputs] = useState({
     name: '',
     description: '',
-    picture: 'https://random.me',
-    price: '',
+    picture: null,
+    price: 0,
     isActive: 1,
     quantity: 0,
   });
-
   const onChange = (e) => {
-    setFormInputs({ ...formInputs, [e.target.name]: e.target.value });
+    if (e.target.type === 'file') {
+      setFormInputs({
+        ...formInputs,
+        picture: e.target.files[0] || null,
+      });
+      fileRef.current = e.target.files[0];
+    } else {
+      setFormInputs({ ...formInputs, [e.target.name]: e.target.value });
+    }
   };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log(formInputs);
-    addGame(formInputs);
+  const onFinish = async (values) => {
+    try {
+      console.log(values);
+      const obj = {
+        name: values.name,
+        picture: values.picture,
+        description: values.description,
+        isActive: values.isActive.value,
+        price: values.price,
+        quantity: values.quantity,
+      };
+      await addGame(obj);
+      console.log('Game added successfully');
+    } catch (error) {
+      console.error('Error adding game:', error);
+    }
   };
-
   const addGame = async (game) => {
-    const res = await fetch(`${URL}add`, {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(game),
-    });
-    const data = await res.json();
+    try {
+      setLoading(true);
 
-    console.log(data);
+      const formData = new FormData();
+      formData.append('name', formInputs.name);
+      formData.append('price', formInputs.price);
+      formData.append('description', formInputs.description);
+      formData.append('quantity', formInputs.quantity);
+      formData.append('isActive', formInputs.isActive.value);
+      formData.append('picture', formInputs.picture);
+
+      console.log(fileRef.current);
+      console.log(formInputs);
+
+      const URL = import.meta.env.VITE_API_BASE_URL;
+
+      const res = await fetch(`${URL}api/games/add`, {
+        method: 'POST',
+        // headers: {
+        //   'Content-Type': 'multipart/form-data',
+        // },
+        body: formData,
+      });
+
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error adding game: ', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
+    <div>
+      <Form onFinish={onFinish}>
+        <Form.Item
           name="name"
-          id="name"
-          value={formInputs.name}
-          onChange={onChange}
-          placeholder="Enter the name of the game"
-        />
+          label="Game's Name"
+          rules={[{ required: true, whitespace: true }]}
+          hasFeedback
+        >
+          <Input
+            placeholder="Enter your game's name"
+            value={formInputs.name}
+            onChange={onChange}
+            name="name"
+          />
+        </Form.Item>
 
-        <input
-          type="text"
-          name="description"
-          id="description"
-          value={formInputs.description}
-          onChange={onChange}
-          placeholder="Enter the description of the game"
-        />
-
-        <input
-          type="text"
+        <Form.Item
           name="price"
-          id="price"
-          value={formInputs.price}
-          onChange={onChange}
-          placeholder="Enter the price of the game"
-        />
+          label="Game's Price"
+          rules={[{ required: true }]}
+          hasFeedback
+        >
+          <Input
+            type="number"
+            placeholder="Enter your game's price"
+            value={formInputs.price}
+            onChange={onChange}
+            name="price"
+            step="0.01"
+            min="0"
+          />
+        </Form.Item>
 
-        <input
-          type="text"
+        <Form.Item
+          name="picture"
+          label="Game's Picture"
+          rules={[{ required: true }]}
+          hasFeedback
+        >
+          <Input
+            type="file"
+            placeholder="Enter your game's picture"
+            value={formInputs.picture}
+            onChange={onChange}
+            ref={fileRef}
+            name="picture"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="isActive"
+          label="Game's Active Status"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+          hasFeedback
+        >
+          <Select
+            labelInValue
+            onChange={(value) =>
+              onChange({ target: { name: 'isActive', value } })
+            }
+            value={formInputs.isActive}
+            options={[
+              { value: true, label: "Yes, the game's active" },
+              { value: false, label: "No, the game's not active" },
+            ]}
+          />
+        </Form.Item>
+
+        <Form.Item
           name="quantity"
-          id="quantity"
-          value={formInputs.quantity}
-          onChange={onChange}
-          placeholder="Enter the quantity of the game"
-        />
+          label="Game's Quantity"
+          rules={[{ required: true }]}
+          hasFeedback
+        >
+          <Input
+            type="number"
+            placeholder="Enter your game's quantity"
+            value={formInputs.quantity}
+            onChange={onChange}
+            name="quantity"
+            step="1"
+            min="0"
+          />
+        </Form.Item>
 
-        <button type="submit">Submit</button>
-      </form>
-    </>
+        <Form.Item
+          name="description"
+          label="Game's Description"
+          rules={[{ required: true }]}
+          hasFeedback
+        >
+          <TextArea
+            placeholder="Enter your game's description"
+            value={formInputs.description}
+            onChange={onChange}
+            name="description"
+          />
+        </Form.Item>
+
+        <Form.Item style={{ textAlign: 'center' }}>
+          <Button type="primary" htmlType="submit" disabled={loading}>
+            {loading ? 'Adding...' : 'Add Game'}
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
   );
 };
 
