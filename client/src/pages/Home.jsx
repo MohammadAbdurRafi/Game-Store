@@ -43,17 +43,6 @@ const Home = () => {
     setGames(games.filter((game) => game.id !== id));
   };
 
-  const updateGame = async (id) => {
-    const game = await fetchGame(id);
-    const res = await fetch(`${URL}${id}`, {
-      method: 'PUT',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(game),
-    });
-    const data = await res.json();
-    console.log(data);
-  };
-
   const handleEditClick = (gameId) => {
     navigate(`/edit/${gameId}`);
   };
