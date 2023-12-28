@@ -39,11 +39,12 @@ const AddGame = () => {
       };
       await addGame(obj);
       console.log('Game added successfully');
+      navigate('/');
     } catch (error) {
       console.error('Error adding game:', error);
     }
   };
-  const addGame = async (game) => {
+  const addGame = async () => {
     try {
       setLoading(true);
 
@@ -62,9 +63,6 @@ const AddGame = () => {
 
       const res = await fetch(`${URL}api/games/add`, {
         method: 'POST',
-        // headers: {
-        //   'Content-Type': 'multipart/form-data',
-        // },
         body: formData,
       });
 
@@ -122,7 +120,7 @@ const AddGame = () => {
             placeholder="Enter your game's picture"
             value={formInputs.picture}
             onChange={onChange}
-            ref={fileRef}
+            ref={fileRef.current}
             name="picture"
           />
         </Form.Item>

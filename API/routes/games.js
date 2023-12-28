@@ -101,7 +101,7 @@ router.post('/add', multerMiddleware.single('picture'), async (req, res) => {
 
 // Update a game
 router.put(
-  '/:game_id',
+  '/edit/:game_id',
   multerMiddleware.single('picture'),
   async (req, res) => {
     try {

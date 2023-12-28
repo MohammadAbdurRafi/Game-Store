@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
+const { DataTypes } = Sequelize;
 
 const Game = db.define('games', {
   id: {
@@ -8,13 +9,13 @@ const Game = db.define('games', {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
   },
-  name: { type: Sequelize.STRING },
-  description: { type: Sequelize.STRING },
-  picture: { type: Sequelize.STRING },
-  price: { type: Sequelize.DOUBLE },
-  isActive: { type: Sequelize.BOOLEAN },
-  quantity: { type: Sequelize.INTEGER },
-  createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
+  name: { type: DataTypes.TEXT },
+  description: { type: DataTypes.TEXT },
+  picture: { type: DataTypes.TEXT },
+  price: { type: DataTypes.DECIMAL(4, 2) },
+  isActive: { type: DataTypes.BOOLEAN },
+  quantity: { type: DataTypes.INTEGER },
+  createdAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
 });
 
 Game.sync().then(() => {

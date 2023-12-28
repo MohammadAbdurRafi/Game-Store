@@ -1,4 +1,4 @@
-import { Menu, Layout, Dropdown, Space } from 'antd';
+import { Menu, Layout } from 'antd';
 import {
   HomeOutlined,
   PlusOutlined,
@@ -7,9 +7,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 const { Header } = Layout;
-import { Link, Routes, Route } from 'react-router-dom';
-import AddGame from '../../pages/AddGame';
-import Home from '../../pages/Home';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const dropdownItems = [
@@ -95,10 +93,6 @@ const Navbar = () => {
           </div>
         </Header>
       </Layout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/add" element={<AddGame />} />
-      </Routes>
     </>
   );
 };
