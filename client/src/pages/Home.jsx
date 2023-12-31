@@ -21,7 +21,7 @@ const Home = () => {
           description: g.description,
           picture: g.picture,
           price: g.price,
-          isActive: g.isActive,
+          is_active: g.is_active,
           quantity: g.quantity,
         }))
       );
@@ -77,7 +77,7 @@ const Home = () => {
               />
               <p>${game.price}</p>
               <p>
-                {game.isActive
+                {game.is_active
                   ? 'The game is actively being supported'
                   : "The game isn't being supported anymore."}
               </p>

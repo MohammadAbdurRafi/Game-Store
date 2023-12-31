@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 const { DataTypes } = Sequelize;
+const User = require('./User');
 
 const Game = db.define('games', {
   id: {
@@ -13,10 +14,12 @@ const Game = db.define('games', {
   description: { type: DataTypes.TEXT },
   picture: { type: DataTypes.TEXT },
   price: { type: DataTypes.DECIMAL(4, 2) },
-  isActive: { type: DataTypes.BOOLEAN },
+  is_active: { type: DataTypes.TEXT },
   quantity: { type: DataTypes.INTEGER },
-  createdAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
 });
+
+Game.belongsTo(User, { as: 'created_by', foreignKey: 'user_id' });
+User.hasMany(Game, { foreignKey: 'user_id' });
 
 Game.sync().then(() => {
   console.log('Games table has been created');

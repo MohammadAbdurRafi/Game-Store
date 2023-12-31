@@ -22,7 +22,7 @@ const EditGame = () => {
         form.setFieldsValue({
           name: gameData.name,
           price: gameData.price,
-          isActive: gameData.isActive,
+          is_active: gameData.is_active,
           quantity: gameData.quantity,
           description: gameData.description,
         });
@@ -49,7 +49,7 @@ const EditGame = () => {
       const formData = new FormData();
       formData.append('name', values.name);
       formData.append('price', values.price);
-      formData.append('isActive', values.isActive);
+      formData.append('is_active', values.is_active);
       formData.append('quantity', values.quantity);
       formData.append('description', values.description);
 
@@ -121,7 +121,7 @@ const EditGame = () => {
 
         <Form.Item
           label="Game's Active Status"
-          name="isActive"
+          name="is_active"
           rules={[
             {
               required: true,

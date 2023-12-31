@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const gameRoute = require('./routes/games');
+const userRoute = require('./routes/users');
 
 // Database
 const db = require('./config/database');
@@ -21,6 +22,7 @@ app.use('/pictures', express.static('pictures'));
 
 // Routes
 app.use('/api/games', gameRoute);
+app.use('/api/users', userRoute);
 
 const PORT = process.env.PORT || 8000;
 

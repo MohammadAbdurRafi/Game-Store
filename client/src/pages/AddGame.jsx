@@ -12,7 +12,7 @@ const AddGame = () => {
     description: '',
     picture: null,
     price: 0,
-    isActive: 1,
+    is_active: 1,
     quantity: 0,
   });
   const onChange = (e) => {
@@ -33,7 +33,7 @@ const AddGame = () => {
         name: values.name,
         picture: values.picture,
         description: values.description,
-        isActive: values.isActive.value,
+        is_active: values.is_active.value,
         price: values.price,
         quantity: values.quantity,
       };
@@ -53,7 +53,7 @@ const AddGame = () => {
       formData.append('price', formInputs.price);
       formData.append('description', formInputs.description);
       formData.append('quantity', formInputs.quantity);
-      formData.append('isActive', formInputs.isActive.value);
+      formData.append('is_active', formInputs.is_active.value);
       formData.append('picture', formInputs.picture);
 
       console.log(fileRef.current);
@@ -126,7 +126,7 @@ const AddGame = () => {
         </Form.Item>
 
         <Form.Item
-          name="isActive"
+          name="is_active"
           label="Game's Active Status"
           rules={[
             {
@@ -138,9 +138,9 @@ const AddGame = () => {
           <Select
             labelInValue
             onChange={(value) =>
-              onChange({ target: { name: 'isActive', value } })
+              onChange({ target: { name: 'is_active', value } })
             }
-            value={formInputs.isActive}
+            value={formInputs.is_active}
             options={[
               { value: true, label: "Yes, the game's active" },
               { value: false, label: "No, the game's not active" },

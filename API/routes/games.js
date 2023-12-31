@@ -1,10 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
-const db = require('../config/database');
+
 const Game = require('../models/Game');
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -35,7 +33,7 @@ router.get('/', async (req, res) => {
     res.json(games);
   } catch (error) {
     console.log(error);
-    res.json({ message: 'Error getting games', error });
+    res.json({ message: 'Error getting games ', error });
   }
 });
 
@@ -53,7 +51,7 @@ router.get('/:game_id', async (req, res) => {
 
 // Add a game
 router.post('/add', multerMiddleware.single('picture'), async (req, res) => {
-  const { name, description, price, isActive, quantity } = req.body;
+  const { name, description, price, is_active, quantity } = req.body;
   console.log(req.file.path);
   const picture = req.file.path.replace('\\', '/');
   let errors = [];
@@ -71,7 +69,7 @@ router.post('/add', multerMiddleware.single('picture'), async (req, res) => {
   if (!price) {
     errors.push({ message: 'Please add a price' });
   }
-  if (!isActive) {
+  if (!is_active) {
     errors.push({ message: 'Please check if the game is active' });
   }
   if (!quantity) {
@@ -88,7 +86,7 @@ router.post('/add', multerMiddleware.single('picture'), async (req, res) => {
         description,
         picture,
         price,
-        isActive,
+        is_active,
         quantity,
       });
       res.json({ message: 'Game created successfully', game });
@@ -108,14 +106,14 @@ router.put(
       const game_id = req.params.game_id;
       const game = await Game.findOne({ where: { id: `${game_id}` } });
 
-      const { name, description, picture, price, isActive, quantity } =
+      const { name, description, picture, price, is_active, quantity } =
         req.body;
 
       game.name = name;
       game.description = description;
       game.picture = picture;
       game.price = price;
-      game.isActive = isActive;
+      game.is_active = is_active;
       game.quantity = quantity;
 
       await game.save();
