@@ -54,7 +54,7 @@ const dropdownItems = [
 
 const menuItems = [
   {
-    label: <Link to="/home">Home</Link>,
+    label: <Link to="/">Home</Link>,
     key: 'home',
     icon: <HomeOutlined />,
   },
@@ -63,18 +63,16 @@ const menuItems = [
     key: 'add_game',
     icon: <PlusOutlined />,
   },
-  // {
-  //   label: (
-  //     <Dropdown menu={{ dropdownItems }}>
-  //       <a onClick={(e) => e.preventDefault()}>
-  //         <Space>
-  //           <UserOutlined />
-  //         </Space>
-  //       </a>
-  //     </Dropdown>
-  //   ),
-  //   key: 'dropdown',
-  // },
+  {
+    label: <Link to="/user/register">Register</Link>,
+    key: 'register',
+    icon: <HomeOutlined />,
+  },
+  {
+    label: <Link to="/user/login">Login</Link>,
+    key: 'login',
+    icon: <PlusOutlined />,
+  },
 ];
 
 const Navbar = () => {
@@ -84,7 +82,6 @@ const Navbar = () => {
         <Header className="header">
           <div>
             <Menu
-              style={{ justifyContent: 'flex-start' }}
               theme="dark"
               mode="horizontal"
               defaultSelectedKeys={['1']}

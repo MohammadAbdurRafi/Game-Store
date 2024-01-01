@@ -51,8 +51,7 @@ router.get('/:game_id', async (req, res) => {
 
 // Add a game
 router.post('/add', multerMiddleware.single('picture'), async (req, res) => {
-  const { name, description, price, is_active, quantity } = req.body;
-  console.log(req.file.path);
+  const { name, description, price, is_active, quantity, user_id } = req.body;
   const picture = req.file.path.replace('\\', '/');
   let errors = [];
 
@@ -88,6 +87,7 @@ router.post('/add', multerMiddleware.single('picture'), async (req, res) => {
         price,
         is_active,
         quantity,
+        user_id,
       });
       res.json({ message: 'Game created successfully', game });
     } catch (error) {
@@ -106,8 +106,15 @@ router.put(
       const game_id = req.params.game_id;
       const game = await Game.findOne({ where: { id: `${game_id}` } });
 
-      const { name, description, picture, price, is_active, quantity } =
-        req.body;
+      const {
+        name,
+        description,
+        picture,
+        price,
+        is_active,
+        quantity,
+        user_id,
+      } = req.body;
 
       game.name = name;
       game.description = description;
@@ -115,6 +122,7 @@ router.put(
       game.price = price;
       game.is_active = is_active;
       game.quantity = quantity;
+      game.user_id = user_id;
 
       await game.save();
       res.json({ message: 'Game updated successfully', game });
