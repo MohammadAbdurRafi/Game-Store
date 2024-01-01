@@ -16,10 +16,15 @@ const Game = db.define('games', {
   price: { type: DataTypes.DECIMAL(4, 2) },
   is_active: { type: DataTypes.TEXT },
   quantity: { type: DataTypes.INTEGER },
+  user_id: {
+    type: Sequelize.UUID,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'id',
+    },
+  },
 });
-
-Game.belongsTo(User, { as: 'created_by', foreignKey: 'user_id' });
-User.hasMany(Game, { foreignKey: 'user_id' });
 
 Game.sync().then(() => {
   console.log('Games table has been created');

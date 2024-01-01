@@ -1,35 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const bycrypt = require('bcryptjs');
-const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcryptjs');
+const { STATUS } = require('../utils/constants');
+const generateToken = require('../utils/generateToken');
 
 const User = require('../models/User');
 
-// Get all users
-router.get('/', async (req, res) => {
-  try {
-    const users = await User.findAll();
-    res.json(users);
-  } catch (error) {
-    console.log(error);
-    res.json({ message: 'Error getting users ', error });
-  }
-});
-
-// Get a specific user
-router.get('/:user_id', async (req, res) => {
-  try {
-    const user_id = req.params.user_id;
-    const result = await User.findOne({ where: { id: `${user_id}` } });
-    res.json(result);
-  } catch (error) {
-    console.log(error);
-    res.json({ message: 'Error getting user ', error });
-  }
-});
-
-// Add a user
-router.post('/add', async (req, res) => {
+// Create a User
+router.post('/register', async (req, res) => {
   const { full_name, email, password, username, phone_number, address } =
     req.body;
   try {
@@ -38,8 +16,8 @@ router.post('/add', async (req, res) => {
       return res.status(400).json({ error: 'Email already exists' });
     }
 
-    const salt = await bycrypt.genSalt(10);
-    const hashedPassword = await bycrypt.hash(password, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
       full_name,
@@ -49,49 +27,45 @@ router.post('/add', async (req, res) => {
       phone_number,
       address,
     });
-    res.json({ message: 'User created successfully', user });
+
+    res.status(201).json(user);
   } catch (error) {
-    console.log(error);
-    res.json({ message: 'Error creating user ', error });
+    console.log('Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Update a user
-router.put('/edit/:user_id', async (req, res) => {
-  const user_id = req.params.user_id;
-  const { full_name, email, password, username, phone_number, address } =
-    req.body;
-  try {
-    const user = await User.findOne({ where: { id: `${user_id}` } });
-
-    const salt = await bycrypt.genSalt(10);
-    const hashedPassword = await bycrypt.hash(password, salt);
-
-    user.full_name = full_name;
-    user.email = email;
-    user.password = hashedPassword;
-    user.username = username;
-    user.phone_number = phone_number;
-    user.address = address;
-
-    await user.save();
-    res.json({ message: 'User updated successfully', user });
-  } catch (error) {
-    console.log(error);
-    res.json({ message: 'Error updating user ', error });
+// User login
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ where: { email } });
+  if (!user) {
+    return res.status(400).json({
+      error:
+        "Sorry we did not find any user that matches with this email address. If you haven't registered, please go through our registration page.",
+    });
   }
-});
 
-// Delete a user
-router.delete('/delete/:user_id', async (req, res) => {
-  try {
-    const user_id = req.params.user_id;
-    const user = await User.findOne({ where: { id: `${user_id}` } });
-    await user.destroy();
-    res.json({ message: 'User deleted successfully', user });
-  } catch (error) {
-    console.log(error);
-    res.json({ message: 'Error deleting game ', error });
+  if (user.is_active === STATUS.INACTIVE) {
+    return res.status(400).json({
+      error:
+        'Sorry, your account is not active. Please contact our customer service.',
+    });
+  }
+
+  if (user && (await bcrypt.compare(password, user.password))) {
+    return res.status(200).json({
+      id: user.id,
+      full_name: user.full_name,
+      email: user.email,
+      username: user.username,
+      phone_number: user.phone_number,
+      address: user.address,
+      is_active: user.is_active,
+      token: generateToken(user.id),
+    });
+  } else {
+    return res.status(400).json({ error: 'Invalid email or password.' });
   }
 });
 

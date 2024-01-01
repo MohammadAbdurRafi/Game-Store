@@ -54,12 +54,12 @@ const dropdownItems = [
 
 const menuItems = [
   {
-    label: <Link to="/">Home</Link>,
+    label: <Link to="/home">Home</Link>,
     key: 'home',
     icon: <HomeOutlined />,
   },
   {
-    label: <Link to="/add">Add Game</Link>,
+    label: <Link to="/game/add">Add Game</Link>,
     key: 'add_game',
     icon: <PlusOutlined />,
   },
