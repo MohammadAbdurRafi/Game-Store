@@ -4,7 +4,9 @@
   "description": "An API for a Game Store",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index"
+    "start": "nodemon index",
+    "data:import": "node seeder",
+    "data:destroy": "node seeder -d"
   },
   "author": "Mohammad Abdur Rafi",
   "license": "ISC",
@@ -13,6 +15,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.0.1",

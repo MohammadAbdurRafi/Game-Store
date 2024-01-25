@@ -13,6 +13,7 @@ const User = db.define('users', {
   email: { type: DataTypes.TEXT, allowNull: false, unique: true },
   password: { type: DataTypes.TEXT, allowNull: false },
   username: { type: DataTypes.TEXT, unique: true },
+  role: { type: DataTypes.TEXT, defaultValue: 'user' },
   phone_number: { type: DataTypes.TEXT },
   address: { type: DataTypes.TEXT },
   is_active: { type: DataTypes.TEXT, defaultValue: 'Y' },

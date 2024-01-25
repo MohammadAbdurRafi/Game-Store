@@ -30,6 +30,7 @@ const Register = () => {
         address: values.address,
       };
       await register(user);
+      console.log('User has been created successfully.');
       // navigate('/')
     } catch (error) {
       console.log('Error registering user: ', MediaError);
@@ -40,19 +41,14 @@ const Register = () => {
     try {
       setLoading(true);
 
-      const formData = new FormData();
-      formData.append('full_name', formInputs.full_name);
-      formData.append('email', formInputs.email);
-      formData.append('password', formInputs.password);
-      formData.append('username', formInputs.username);
-      formData.append('phone_number', formInputs.phone_number);
-      formData.append('address', formInputs.address);
-
       const URL = import.meta.env.VITE_API_BASE_URL;
 
       const res = await fetch(`${URL}api/users/register`, {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formInputs),
       });
 
       const data = await res.json();
@@ -66,7 +62,7 @@ const Register = () => {
   };
   return (
     <div>
-      <Form onFinish={onFinish}>
+      <Form onFinish={() => onFinish(formInputs)}>
         <Form.Item
           name={'full_name'}
           label="User's Full Name"

@@ -1,7 +1,12 @@
 const express = require('express');
 const cors = require('cors');
-const gameRoute = require('./routes/games');
-const userRoute = require('./routes/users');
+const path = require('path');
+const dotenv = require('dotenv');
+const gameRoutes = require('./routes/gameRoutes');
+const userRoutes = require('./routes/userRoutes');
+const { errorHandler } = require('./middleware/errorMiddleware');
+
+dotenv.config();
 
 // Database
 const db = require('./config/database');
@@ -18,11 +23,15 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
 app.use('/pictures', express.static('pictures'));
 
 // Routes
-app.use('/api/games', gameRoute);
-app.use('/api/users', userRoute);
+app.use('/api/games', gameRoutes);
+app.use('/api/users', userRoutes);
+
+// Middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 8000;
 

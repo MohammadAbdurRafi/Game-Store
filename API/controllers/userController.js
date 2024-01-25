@@ -1,17 +1,14 @@
-const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { STATUS } = require('../utils/constants');
 const generateToken = require('../utils/generateToken');
-
 const User = require('../models/User');
 
-// Create a User
-router.post('/register', async (req, res) => {
+const register = async (req, res) => {
   const { full_name, email, password, username, phone_number, address } =
     req.body;
   try {
     const userExists = await User.findOne({ where: { email } });
+
     if (userExists) {
       return res.status(400).json({ error: 'Email already exists' });
     }
@@ -27,22 +24,21 @@ router.post('/register', async (req, res) => {
       phone_number,
       address,
     });
-
-    res.status(201).json(user);
+    res.status(201).json({ message: 'You have successfully registered', user });
   } catch (error) {
-    console.log('Error:', error);
+    console.log('Error: ', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-});
+};
 
-// User login
-router.post('/login', async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
+
   if (!user) {
     return res.status(400).json({
       error:
-        "Sorry we did not find any user that matches with this email address. If you haven't registered, please go through our registration page.",
+        "Sorry, we didn't find any user that matches the email address given. If you haven't registered yet, please go through our registration page.",
     });
   }
 
@@ -67,6 +63,6 @@ router.post('/login', async (req, res) => {
   } else {
     return res.status(400).json({ error: 'Invalid email or password.' });
   }
-});
+};
 
-module.exports = router;
+module.exports = { register, login };
