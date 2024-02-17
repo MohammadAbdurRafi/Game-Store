@@ -5,6 +5,8 @@ import AddGame from './pages/AddGame';
 import EditGame from './pages/EditGame';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Users from './pages/Users';
+import './App.css';
 
 const App = () => {
   return (
@@ -16,6 +18,7 @@ const App = () => {
         <Route path="/game/edit/:id" element={<EditGame />} />
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/login" element={<Login />} />
+        <Route path="/users" element={<Users />} />
       </Routes>
     </div>
   );

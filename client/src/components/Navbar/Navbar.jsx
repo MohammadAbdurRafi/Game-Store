@@ -73,6 +73,11 @@ const menuItems = [
     key: 'login',
     icon: <PlusOutlined />,
   },
+  {
+    label: <Link to="/users">Users</Link>,
+    key: 'login',
+    icon: <PlusOutlined />,
+  },
 ];
 
 const Navbar = () => {

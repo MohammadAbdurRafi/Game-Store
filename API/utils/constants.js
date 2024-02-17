@@ -3,4 +3,9 @@ const STATUS = {
   INACTIVE: 'N',
 };
 
-module.exports = { STATUS };
+const ROLE = {
+  ADMIN: 'admin',
+  USER: 'user',
+};
+
+module.exports = { STATUS, ROLE };

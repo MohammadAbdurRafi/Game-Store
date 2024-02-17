@@ -4,7 +4,7 @@ const generateToken = require('../utils/generateToken');
 const User = require('../models/User');
 
 const register = async (req, res) => {
-  const { full_name, email, password, username, phone_number, address } =
+  const { full_name, email, password, username, phone_number, address, role } =
     req.body;
   try {
     const userExists = await User.findOne({ where: { email } });
@@ -23,6 +23,7 @@ const register = async (req, res) => {
       username,
       phone_number,
       address,
+      role,
     });
     res.status(201).json({ message: 'You have successfully registered', user });
   } catch (error) {
@@ -58,6 +59,7 @@ const login = async (req, res) => {
       phone_number: user.phone_number,
       address: user.address,
       is_active: user.is_active,
+      role: user.role,
       token: generateToken(user.id),
     });
   } else {
@@ -65,4 +67,32 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.findAll();
+    res.json(users);
+  } catch (error) {
+    console.log('Error: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const user_id = req.params.user_id;
+
+  try {
+    const user = await User.findOne({ where: { id: `${user_id}` } });
+
+    if (!user) {
+      return res.status(400).json({ error: 'User not found' });
+    }
+
+    await user.destroy();
+    res.status(204).json({ message: 'Game deleted successfully', game });
+  } catch (error) {
+    console.log('Error: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+module.exports = { register, login, getUsers, deleteUser };

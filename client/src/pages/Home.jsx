@@ -49,11 +49,12 @@ const Home = () => {
 
   return (
     <>
-      <Row gutter={16}>
+      <Row gutter={16} style={{ marginLeft: 10, marginRight: 10 }}>
         {games.map((game) => (
           <Col key={game.id} span={3}>
             <Card
               style={{ textAlign: 'center', paddingTop: '5px' }}
+              bordered
               hoverable
               cover={
                 <div
