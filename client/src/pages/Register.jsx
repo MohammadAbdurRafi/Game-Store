@@ -61,8 +61,18 @@ const Register = () => {
     }
   };
   return (
-    <div>
-      <Form onFinish={() => onFinish(formInputs)}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '100px',
+      }}
+    >
+      <Form
+        onFinish={() => onFinish(formInputs)}
+        layout="vertical"
+        style={{ width: '300px', textAlign: 'center' }}
+      >
         <Form.Item
           name={'full_name'}
           label="User's Full Name"
@@ -148,7 +158,7 @@ const Register = () => {
           />
         </Form.Item>
 
-        <Button htmlType="submit" disabled={loading}>
+        <Button type="primary" htmlType="submit" disabled={loading}>
           {loading ? 'Registering...' : 'Register'}
         </Button>
       </Form>

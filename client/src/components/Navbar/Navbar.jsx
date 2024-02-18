@@ -75,7 +75,7 @@ const menuItems = [
   },
   {
     label: <Link to="/users">Users</Link>,
-    key: 'login',
+    key: 'users',
     icon: <PlusOutlined />,
   },
 ];

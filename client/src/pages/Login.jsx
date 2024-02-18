@@ -52,11 +52,19 @@ const Login = () => {
     }
   };
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '250px',
+      }}
+    >
       <Form
         onFinish={() => {
           onFinish(formInputs);
         }}
+        style={{ textAlign: 'center', width: '300px' }}
+        layout="vertical"
       >
         <Form.Item
           name={'email'}
@@ -86,7 +94,16 @@ const Login = () => {
           />
         </Form.Item>
 
-        <Button htmlType="submit" disabled={loading}>
+        <Link to="/forgot-password">Forgot Password</Link>
+
+        <br />
+
+        <Button
+          type="primary"
+          htmlType="submit"
+          disabled={loading}
+          style={{ marginTop: '10px' }}
+        >
           {loading ? 'Logging In...' : 'Login'}
         </Button>
       </Form>

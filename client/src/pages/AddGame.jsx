@@ -76,8 +76,14 @@ const AddGame = () => {
   };
 
   return (
-    <div style={{ display: 'block', textAlign: 'center' }}>
-      <Form onFinish={onFinish} layout="vertical">
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '100px',
+      }}
+    >
+      <Form onFinish={onFinish} layout="vertical" style={{ width: '300px' }}>
         <Form.Item
           name="name"
           label="Game's Name"

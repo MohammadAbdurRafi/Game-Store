@@ -6,6 +6,7 @@ import EditGame from './pages/EditGame';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Users from './pages/Users';
+import ForgotPassword from './pages/ForgotPassword';
 import './App.css';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/login" element={<Login />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </div>
   );
