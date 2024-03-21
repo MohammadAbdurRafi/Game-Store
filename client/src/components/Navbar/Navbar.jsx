@@ -10,48 +10,6 @@ const { Header } = Layout;
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
-const dropdownItems = [
-  {
-    key: 'projects',
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https//:www.google.com"
-      >
-        Projects
-      </a>
-    ),
-    icon: <CodeOutlined />,
-  },
-  {
-    key: 'profile',
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https//:www.google.com"
-      >
-        Profile
-      </a>
-    ),
-    icon: <UserOutlined />,
-  },
-  {
-    key: 'logout',
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https//:www.google.com"
-      >
-        Logout
-      </a>
-    ),
-    icon: <LogoutOutlined />,
-  },
-];
-
 const menuItems = [
   {
     label: <Link to="/">Home</Link>,

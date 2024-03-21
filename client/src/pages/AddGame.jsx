@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Form, Input, Button, Select } from 'antd';
+import { Form, Input, Button, Select, Typography } from 'antd';
 const { TextArea } = Input;
+const { Title } = Typography;
 
 const AddGame = () => {
   const fileRef = useRef(null);
@@ -61,7 +62,7 @@ const AddGame = () => {
 
       const URL = import.meta.env.VITE_API_BASE_URL;
 
-      const res = await fetch(`${URL}api/games/add`, {
+      const res = await fetch(`${URL}/api/games/add`, {
         method: 'POST',
         body: formData,
       });
@@ -79,10 +80,13 @@ const AddGame = () => {
     <div
       style={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
-        marginTop: '100px',
+        alignItems: 'center',
+        marginTop: '50px',
       }}
     >
+      <Title>Add Game</Title>
       <Form onFinish={onFinish} layout="vertical" style={{ width: '300px' }}>
         <Form.Item
           name="name"

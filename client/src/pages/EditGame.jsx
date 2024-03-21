@@ -37,7 +37,7 @@ const EditGame = () => {
   }, [id, form]);
 
   const fetchGame = async (id) => {
-    const res = await fetch(`${URL}api/games/${id}`);
+    const res = await fetch(`${URL}/api/games/${id}`);
     const data = await res.json();
     return data;
   };

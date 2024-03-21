@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Card, Col, Row, Image, Button, Space, Typography } from 'antd';
+import { Card, Col, Row, Image, Button, Space, Typography, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 const { Meta } = Card;
 const { Text } = Typography;
+const { Search } = Input;
 
 const Home = () => {
   const URL = 'http://localhost:8000/api/games/';
   const [games, setGames] = useState([]);
-
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     const getGames = async () => {
       let gamesFromServer = await fetchGames();
-      console.log(gamesFromServer);
       setGames(
         gamesFromServer.map((g) => ({
           id: g.id,
@@ -47,10 +47,36 @@ const Home = () => {
     navigate(`/edit/${gameId}`);
   };
 
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredGames = games.filter((game) =>
+    game.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
+      <div
+        style={{
+          maxWidth: 'fit-content',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          marginTop: 16,
+        }}
+      >
+        <Search
+          placeholder="Search games"
+          allowClear
+          enterButton="Search"
+          size="large"
+          onChange={handleSearch}
+          style={{ width: 1000, marginBottom: 16 }}
+        />
+      </div>
+
       <Row gutter={16} style={{ marginLeft: 10, marginRight: 10 }}>
-        {games.map((game) => (
+        {filteredGames.map((game) => (
           <Col key={game.id} span={3}>
             <Card
               style={{ textAlign: 'center', paddingTop: '5px' }}

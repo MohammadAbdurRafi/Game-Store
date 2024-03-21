@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Typography } from 'antd';
+const { Title } = Typography;
 
 const Register = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const Register = () => {
 
       const URL = import.meta.env.VITE_API_BASE_URL;
 
-      const res = await fetch(`${URL}api/users/register`, {
+      const res = await fetch(`${URL}/api/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,9 +66,12 @@ const Register = () => {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        marginTop: '100px',
+        alignItems: 'center',
+        flexDirection: 'column',
+        marginTop: '50px',
       }}
     >
+      <Title>Register</Title>
       <Form
         onFinish={() => onFinish(formInputs)}
         layout="vertical"

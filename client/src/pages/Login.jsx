@@ -1,8 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Typography, message } from 'antd';
+import { post } from '../api/services';
+import { AuthContext } from '../context/auth';
+import { useForm } from 'antd/es/form/Form';
+const { Title } = Typography;
 
 const Login = () => {
+  const [form] = useForm();
+  const context = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formInputs, setFormInputs] = useState({
@@ -15,18 +21,21 @@ const Login = () => {
   };
 
   const onFinish = async (values) => {
+    console.log('Success:', values);
     try {
-      console.log(values);
-      const userLogin = {
-        email: values.email,
-        password: values.password,
-      };
-      await login(userLogin);
-      console.log('User has been successfully logged in.');
-      // navigate('/')
+      const response = await post('/api/users/login', values);
+      if (response?.token) {
+        form.resetFields();
+        message.success('Logged in successfully');
+        context.login(response);
+      }
     } catch (error) {
-      console.log('Error logging user in: ', error);
+      console.error(error);
     }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed,', errorInfo);
   };
 
   const login = async () => {
@@ -51,18 +60,24 @@ const Login = () => {
       setLoading(false);
     }
   };
+
   return (
     <div
       style={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         marginTop: '250px',
+        alignItems: 'center',
       }}
     >
+      <Title>Log In</Title>
       <Form
+        form={form}
         onFinish={() => {
           onFinish(formInputs);
         }}
+        onFinishFailed={onFinishFailed}
         style={{ textAlign: 'center', width: '300px' }}
         layout="vertical"
       >
