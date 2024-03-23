@@ -27,7 +27,10 @@ const Login = () => {
       if (response?.token) {
         form.resetFields();
         message.success('Logged in successfully');
+        localStorage.setItem('user', JSON.stringify(response));
+        console.log(response);
         context.login(response);
+        window.location.href = '/';
       }
     } catch (error) {
       console.error(error);
