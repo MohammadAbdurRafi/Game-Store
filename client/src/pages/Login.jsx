@@ -30,7 +30,7 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(response));
         console.log(response);
         context.login(response);
-        window.location.href = '/';
+        navigate('/');
       }
     } catch (error) {
       console.error(error);
